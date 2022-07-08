@@ -307,31 +307,28 @@ class CarouselWidget extends StatelessWidget {
           return Container(
             margin: index == 0 ? const EdgeInsets.only(left: 20) : null,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 3),
               child: Column(
                 children: [
                   Container(
-                  color: Colors.yellow.shade50,
+              color: Colors.yellow.shade50,
                   height: 180 - snapshot!.forecast!.forecastday![0].hour![index].tempC! * 4,
                 ),
                   Container(
                     //alignment: Alignment.center,
+                   decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(5.0)),
                     height: snapshot.forecast!.forecastday![0].hour![index].tempC! * 4,
-                    width: 70,
-                    color: Colors.orange,
+                    width: 55,
+                    //color: Colors.orange,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white70,
                           fontWeight: FontWeight.bold
                         ),),
-                     Text('${snapshot.forecast!.forecastday![0].hour![index].precipMm}mm', style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white70,
-                          fontWeight: FontWeight.bold
-                      ),), ]
+                      ]
                       ,)
                   ),
                   index < 11
@@ -374,7 +371,7 @@ class GraphikWeekWidget extends StatelessWidget {
     final model = context.read<MainScreenModel>();
     final snapshot = model.forecastObject;
     return Center(child: Container(
-      height: 125,
+        height: 125,
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: 2,
@@ -383,6 +380,7 @@ class GraphikWeekWidget extends StatelessWidget {
           return Center(
               child: Row(
                     children: [
+                      SizedBox(width: 30,),
                       Image.network(
                           'https://${(snapshot!.forecast!.forecastday![index].day!.condition!.icon).toString().substring(2)}',
                           scale: 1),
@@ -392,10 +390,14 @@ class GraphikWeekWidget extends StatelessWidget {
                       ),),
                       const SizedBox(width: 8,),
                       Container(
+                        decoration: BoxDecoration(color: Colors.amberAccent!, borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5.0),
+                          bottomLeft: Radius.circular(5.0)
+                        )),
                         alignment: Alignment.bottomCenter,
-                        height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
+                        height: 40,
                         width: 65,
-                        color: Colors.amberAccent,
+                        //color: Colors.amberAccent!,
                         child: Center(
                           child: Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
                             style: const TextStyle(
@@ -406,10 +408,14 @@ class GraphikWeekWidget extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(5.0),
+                          bottomRight: Radius.circular(5.0)
+                        )),
                         alignment: Alignment.bottomCenter,
-                        height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
+                        height: 40,
                         width: snapshot.forecast!.forecastday![index].day!.maxtempC! * 4,
-                        color: Colors.orangeAccent,
+                        //color: Colors.orangeAccent,
                         child: Center(
                           child: Text('${snapshot.forecast!.forecastday![index].day!.maxtempC}°',
                             style: const TextStyle(
