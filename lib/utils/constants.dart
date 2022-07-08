@@ -70,15 +70,15 @@ Widget customListTile({
           TextSpan(
             text: first,
             style: const TextStyle(
-              color: darkGreyColor,
-              fontSize: 16,
+              color: Colors.black,
+              fontSize: 20,
             ),
           ),
           TextSpan(
             text: second,
             style: const TextStyle(
-              color: primaryColor,
-              fontSize: 16,
+              color: Colors.black,
+              fontSize: 20,
             ),
           ),
         ],

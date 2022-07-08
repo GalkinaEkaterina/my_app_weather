@@ -13,7 +13,7 @@ class MainScreenWidget extends StatelessWidget {
     final model = context.watch<MainScreenModel>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.yellow.shade50,
       body:
       model.forecastObject?.location?.name != null && model.loading == false
           ? _ViewWidget()
@@ -40,16 +40,25 @@ class _ViewWidget extends StatelessWidget {
                 children: const [
                   SizedBox(height: 70),
                   CityInfoWidget(),
-                  SizedBox(height: 15),
+                  SizedBox(height: 5),
+                  Align(alignment: Alignment.centerLeft,
+                      child: Padding(padding: const EdgeInsets.only(left: 25), child:
+                      Text('This Day', style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),)),),
                   CarouselWidget(),
-                  SizedBox(height: 15),
+                  SizedBox(height: 5),
                   WindWidget(),
                   SizedBox(height: 15),
-                  Text('This Week', style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),),
+                  Align(alignment: Alignment.centerLeft,
+                    child: Padding(padding: const EdgeInsets.only(left: 25), child:
+                    Text('This Week', style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),)),),
                   GraphikWeekWidget(),
                   SizedBox(height: 15),
                   BarometerWidget(),
@@ -82,11 +91,11 @@ class HeaderWidget extends StatelessWidget {
               onSubmitted: (_) => model.onSubmitSearch(),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: bgGreyColor.withAlpha(235),
+                fillColor: Colors.yellow.shade50.withAlpha(235),
                 hintText: 'Search',
-                hintStyle: TextStyle(color: Colors.blue.withAlpha(135)),
+                hintStyle: TextStyle(color: Colors.amber.withAlpha(235)),
                 prefixIcon: IconButton(
-                  icon: const Icon(Icons.search, color: Colors.blue),
+                  icon: const Icon(Icons.search, color: Colors.amber),
                   onPressed: model.onSubmitSearch,
                 ),
                 border: const OutlineInputBorder(
@@ -100,13 +109,13 @@ class HeaderWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: bgGreyColor.withAlpha(235),
+              color: Colors.yellow.shade50.withAlpha(235),
             ),
             child: IconButton(
               padding: const EdgeInsets.all(12),
               iconSize: 26,
               onPressed: model.onSubmitLocate,
-              icon: const Icon(Icons.location_on_outlined, color: Colors.green),
+              icon: const Icon(Icons.location_on_outlined, color: Colors.amber),
             ),
           ),
         ],
@@ -129,38 +138,32 @@ class CityInfoWidget extends StatelessWidget {
     var url =
         'https://${((snapshot.current!.condition!.icon).toString().substring(2)).replaceAll("64", "128")}';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.network(url, scale: 1.2),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            appText(
-              size: 30,
-              text: '$city',
-              isBold: FontWeight.bold,
-              color: primaryColor,
-            ),
-            RotationTransition(
-              turns: AlwaysStoppedAnimation(windDegree! / 360),
-              child: const Icon(Icons.north, color: primaryColor),
-            )
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            appText(
-              size: 70,
-              text: '$temp°',
-            ),
-            appText(size: 20, text: '$feelTemp°', color: darkGreyColor),
-          ],
-        ),
-      ],
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Padding(padding: const EdgeInsets.only(left: 25),
+            child: Text('Right now in $city', style: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),)),
+          Padding(padding: const EdgeInsets.only(left: 25), child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              Image.network(url, scale: 0.9),
+              const SizedBox(height: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  appText(
+                    size: 70,
+                    text: '$temp°',
+                  ),
+                  appText(size: 20, text: 'Feels like $feelTemp°', color: darkGreyColor),
+                ],
+              ),
+            ],
+          ),)]
+
     );
   }
 }
@@ -184,14 +187,14 @@ class BarometerWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: appText(
-              size: 20,
-              color: primaryColor.withOpacity(.8),
+              size: 25,
+              color: Colors.black,
               text: 'Barometer',
               isBold: FontWeight.bold,
             ),
           ),
           Card(
-            color: bgGreyColor,
+            color: Colors.yellow.shade50,
             elevation: 0,
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
@@ -212,14 +215,14 @@ class BarometerWidget extends StatelessWidget {
                     first: 'Humidity:',
                     second: ' $humidity %',
                     icon: Icons.water_drop_outlined,
-                    iconColor: Colors.blueGrey,
+                    iconColor: Colors.indigo,
                   ),
                   customListTile(
                     //ДАВЛЕНИЕ
                     first: 'Pressure:',
                     second: ' $pressure hPa',
                     icon: Icons.speed,
-                    iconColor: Colors.red[300]!,
+                    iconColor: Colors.deepOrange!,
                   ),
                 ],
               ),
@@ -251,17 +254,17 @@ class WindWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: appText(
-              size: 20,
-              color: primaryColor.withOpacity(.8),
+              size: 25,
+              color: Colors.black,
               text: 'Wind',
               isBold: FontWeight.bold,
             ),
           ),
           Card(
-            color: bgGreyColor,
+            color: Colors.yellow.shade50,
             elevation: 0,
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             child: SizedBox(
               width: double.maxFinite,
               child: Column(
@@ -272,7 +275,7 @@ class WindWidget extends StatelessWidget {
                     first: 'Speed:',
                     second: ' $speed km/h',
                     icon: Icons.air,
-                    iconColor: Colors.blue,
+                    iconColor: Colors.indigo,
                   ),
                 ],
               ),
@@ -295,7 +298,7 @@ class CarouselWidget extends StatelessWidget {
     final model = context.read<MainScreenModel>();
     final snapshot = model.forecastObject;
     return SizedBox(
-      height: 200,
+      height: 300,
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: 23,
@@ -304,48 +307,52 @@ class CarouselWidget extends StatelessWidget {
           return Container(
             margin: index == 0 ? const EdgeInsets.only(left: 20) : null,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
               child: Column(
                 children: [
+                  Container(
+                  color: Colors.yellow.shade50,
+                  height: 180 - snapshot!.forecast!.forecastday![0].hour![index].tempC! * 4,
+                ),
+                  Container(
+                    //alignment: Alignment.center,
+                    height: snapshot.forecast!.forecastday![0].hour![index].tempC! * 4,
+                    width: 70,
+                    color: Colors.orange,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold
+                        ),),
+                     Text('${snapshot.forecast!.forecastday![0].hour![index].precipMm}mm', style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white70,
+                          fontWeight: FontWeight.bold
+                      ),), ]
+                      ,)
+                  ),
                   index < 11
                       ? appText(
-                      size: 14,
+                      size: 19,
                       text: '${index + 1} am',
                       color: primaryColor)
                       : index == 11
                       ? appText(
-                      size: 14,
+                      size: 19,
                       text: '${index + 1} pm',
                       color: primaryColor)
                       : appText(
-                      size: 14,
+                      size: 19,
                       text: '${index - 11} pm',
                       color: primaryColor),
                   const SizedBox(height: 10),
                   Image.network(
                       'https://${(snapshot!.forecast!.forecastday![0].hour![index].condition!.icon).toString().substring(2)}',
-                      scale: 2),
+                      scale: 0.9),
                   const SizedBox(height: 5),
-                  Container(
-                    color: Colors.white,
-                    height: 100 - snapshot.forecast!.forecastday![0].hour![index].tempC! * 3,
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: snapshot.forecast!.forecastday![0].hour![index].tempC! * 3,
-                    width: 40,
-                    color: Colors.cyan,
-                    child: Center(
-                      child: Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.white70,
-                        ),),
-                    ),
-                  ),
-                  Container(
-
-                  ),
                 ],
               ),
             ),
@@ -366,26 +373,20 @@ class GraphikWeekWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<MainScreenModel>();
     final snapshot = model.forecastObject;
-    return SizedBox(
-      height: 200,
+    return Center(child: Container(
+      height: 125,
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: 2,
         scrollDirection: Axis.vertical,
         itemBuilder: (BuildContext context, index) {
           return Center(
-              child: Container(
-            margin: index == 0 ? const EdgeInsets.only(top: 20) : null,
-            child:
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Center(
-                  child: Row(
+              child: Row(
                     children: [
                       Image.network(
                           'https://${(snapshot!.forecast!.forecastday![index].day!.condition!.icon).toString().substring(2)}',
                           scale: 1),
-                      Text('${snapshot!.forecast!.forecastday![index + 1].date}'.substring(8, 10) +
+                      Text('${snapshot.forecast!.forecastday![index + 1].date}'.substring(8, 10) +
                           '.' + '${snapshot.forecast!.forecastday![index + 1].date}   '.substring(5, 7), style: TextStyle(
                         fontSize: 22,
                       ),),
@@ -394,7 +395,7 @@ class GraphikWeekWidget extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
                         width: 65,
-                        color: Colors.cyan,
+                        color: Colors.amberAccent,
                         child: Center(
                           child: Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
                             style: const TextStyle(
@@ -408,7 +409,7 @@ class GraphikWeekWidget extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
                         width: snapshot.forecast!.forecastday![index].day!.maxtempC! * 4,
-                        color: Colors.lightGreenAccent,
+                        color: Colors.orangeAccent,
                         child: Center(
                           child: Text('${snapshot.forecast!.forecastday![index].day!.maxtempC}°',
                             style: const TextStyle(
@@ -420,12 +421,10 @@ class GraphikWeekWidget extends StatelessWidget {
                       ),
                     ],
                   ),
+                );
 
-                )
-            ),
-          ));
           },
       )
-    );
+    ));
   }
 }
