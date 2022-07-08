@@ -45,6 +45,13 @@ class _ViewWidget extends StatelessWidget {
                   SizedBox(height: 15),
                   WindWidget(),
                   SizedBox(height: 15),
+                  Text('This Week', style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),),
+                  GraphikWeekWidget(),
+                  SizedBox(height: 15),
                   BarometerWidget(),
                 ]),
           )
@@ -277,7 +284,7 @@ class WindWidget extends StatelessWidget {
   }
 }
 
-//КАРУСЕЛЬ С ПОЧАСОВОЙ ТЕМПЕРАТУРОЙ
+//КАРУСЕЛЬ С ПОЧАСОВОЙ ТЕМПЕРАТУРОЙ И ГРАФИКОМ
 class CarouselWidget extends StatelessWidget {
   const CarouselWidget({
     Key? key,
@@ -288,7 +295,7 @@ class CarouselWidget extends StatelessWidget {
     final model = context.read<MainScreenModel>();
     final snapshot = model.forecastObject;
     return SizedBox(
-      height: 100,
+      height: 200,
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: 23,
@@ -319,10 +326,25 @@ class CarouselWidget extends StatelessWidget {
                       'https://${(snapshot!.forecast!.forecastday![0].hour![index].condition!.icon).toString().substring(2)}',
                       scale: 2),
                   const SizedBox(height: 5),
-                  appText(
-                    size: 14,
-                    text:
-                    '${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
+                  Container(
+                    color: Colors.white,
+                    height: 100 - snapshot.forecast!.forecastday![0].hour![index].tempC! * 3,
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: snapshot.forecast!.forecastday![0].hour![index].tempC! * 3,
+                    width: 40,
+                    color: Colors.cyan,
+                    child: Center(
+                      child: Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white70,
+                        ),),
+                    ),
+                  ),
+                  Container(
+
                   ),
                 ],
               ),
@@ -330,6 +352,80 @@ class CarouselWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+//ГРАФИК ТЕМПЕРАТУРЫ ПО ДНЯМ НЕДЕЛИ
+class GraphikWeekWidget extends StatelessWidget {
+  const GraphikWeekWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<MainScreenModel>();
+    final snapshot = model.forecastObject;
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: 2,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (BuildContext context, index) {
+          return Center(
+              child: Container(
+            margin: index == 0 ? const EdgeInsets.only(top: 20) : null,
+            child:
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Center(
+                  child: Row(
+                    children: [
+                      Image.network(
+                          'https://${(snapshot!.forecast!.forecastday![index].day!.condition!.icon).toString().substring(2)}',
+                          scale: 1),
+                      Text('${snapshot!.forecast!.forecastday![index + 1].date}'.substring(8, 10) +
+                          '.' + '${snapshot.forecast!.forecastday![index + 1].date}   '.substring(5, 7), style: TextStyle(
+                        fontSize: 22,
+                      ),),
+                      const SizedBox(width: 8,),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
+                        width: 65,
+                        color: Colors.cyan,
+                        child: Center(
+                          child: Text('${snapshot.forecast!.forecastday![0].hour![index].tempC}°',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Colors.white70,
+                            ),),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 50,//snapshot.forecast!.forecastday![index].day!.mintempC * 2,
+                        width: snapshot.forecast!.forecastday![index].day!.maxtempC! * 4,
+                        color: Colors.lightGreenAccent,
+                        child: Center(
+                          child: Text('${snapshot.forecast!.forecastday![index].day!.maxtempC}°',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Colors.white70,
+                            ),),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                )
+            ),
+          ));
+          },
+      )
     );
   }
 }

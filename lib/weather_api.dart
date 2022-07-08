@@ -29,7 +29,7 @@ class WeatherApi {
       parameters = {
         'key': Constants.WEATHER_APP_ID,
         'q': cityName,
-        'days': '1',
+        'days': '10',
       };
     } else {
       UserLocation location = UserLocation();
@@ -38,7 +38,7 @@ class WeatherApi {
       parameters = {
         'key': Constants.WEATHER_APP_ID,
         'q': fullLocation,
-        'days': '1',
+        'days': '10',
       };
     }
 
